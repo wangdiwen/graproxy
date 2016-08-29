@@ -1,0 +1,43 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "iIUYZyoanCQQTUaWsu8b+iOSPt4=",
+			"path": "github.com/gorilla/context",
+			"revision": "1c83b3eabd45b6d76072b66b746c20815fb2872d",
+			"revisionTime": "2015-08-20T05:12:45Z"
+		},
+		{
+			"checksumSHA1": "SGSXlSU1TFtg5aTlVA9v4Ka86lU=",
+			"path": "github.com/gorilla/securecookie",
+			"revision": "e95799a481bbcc3d01c2ad5178524cb8bec9f370",
+			"revisionTime": "2015-08-20T08:29:58Z"
+		},
+		{
+			"checksumSHA1": "6pciF/BzzHEeg00hrTUOjH7InVI=",
+			"path": "github.com/shuaiming/mung",
+			"revision": "69986c6355b7877cd2d4c560271eb2cf8b8c6cf8",
+			"revisionTime": "2016-07-22T15:19:22Z"
+		},
+		{
+			"checksumSHA1": "zq3MdU8x5T/qL8Voa6Hz1ku2Jp0=",
+			"path": "github.com/shuaiming/mung/middlewares",
+			"revision": "69986c6355b7877cd2d4c560271eb2cf8b8c6cf8",
+			"revisionTime": "2016-07-22T15:19:22Z"
+		},
+		{
+			"checksumSHA1": "LM8L5kvuPFSIxAftfvSPkCprRx0=",
+			"path": "github.com/shuaiming/mung/middlewares/sessions",
+			"revision": "69986c6355b7877cd2d4c560271eb2cf8b8c6cf8",
+			"revisionTime": "2016-07-22T15:19:22Z"
+		},
+		{
+			"checksumSHA1": "nJvwfSutX2NIa6au+u6Gz344OLs=",
+			"path": "github.com/shuaiming/openid",
+			"revision": "8b46460c90e4056d2aaebb852978a5225139f782",
+			"revisionTime": "2016-07-12T09:36:16Z"
+		}
+	],
+	"rootPath": "github.com/shuaiming/graproxy"
+}
