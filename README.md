@@ -21,7 +21,7 @@ simple implementation for grafana auth.proxy with openid
       -l string
         proxy server listen address (default ":8080")
       -n string
-        proxy domain name and port openid will return to (default "localhost:8080")
+        proxy domain name openid will return to (default "localhost")
 
 ## living example
 

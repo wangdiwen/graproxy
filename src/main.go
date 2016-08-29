@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/shuaiming/mung"
 	"github.com/shuaiming/mung/middlewares"
@@ -13,9 +14,7 @@ import (
 var flagGrafana = flag.String("grafana", "localhost", "grafana host and port")
 var flagOpenIDEndpoint = flag.String("endpoint", "", "openid endpoint")
 var flagListen = flag.String("l", ":8080", "proxy server listen address")
-var flagServer = flag.String(
-	"n", "localhost:8080",
-	"proxy domain name and port openid will return to")
+var flagServer = flag.String("n", "localhost", "proxy domain name openid will return to")
 
 func main() {
 
@@ -31,7 +30,7 @@ func main() {
 	sessionMgr := middlewares.NewSessions(store)
 	openid := middlewares.NewOpenID(
 		"https://login.netease.com/openid",
-		fmt.Sprintf("http://%s", *flagServer), //RELEASE
+		fmt.Sprintf("http://%s:%s", *flagServer, strings.Split(*flagListen, ":")[1]),
 		"/openid",
 	)
 
