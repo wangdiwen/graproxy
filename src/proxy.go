@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 
 	"github.com/shuaiming/mung/middlewares"
 )
@@ -17,7 +18,7 @@ type Proxy struct {
 
 // NewProxy New proxy
 func NewProxy(grafana string) *Proxy {
-	backend, err := url.Parse(fmt.Sprintf("http://%s", grafana))
+	backend, err := url.Parse(fmt.Sprintf("%s", grafana))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,11 +27,23 @@ func NewProxy(grafana string) *Proxy {
 }
 
 func (p *Proxy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	sess := middlewares.GetSession(r)
 	openid := middlewares.GetOpenIDUser(r)
 
 	// overwrite grafana's login
 	if r.URL.Path == "/login" {
 		http.Redirect(rw, r, "/openid/login", http.StatusFound)
+		return
+	}
+
+	// overwrite grafana's logout
+	if r.URL.Path == "/logout" {
+		delete(sess.Values, middlewares.OpenIDContextKey)
+		if err := sess.Save(r, rw); err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
+
+		p.proxy.ServeHTTP(rw, r)
 		return
 	}
 
