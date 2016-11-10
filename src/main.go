@@ -11,14 +11,23 @@ import (
 	"github.com/shuaiming/mung/middlewares/sessions"
 )
 
-var flagGrafana = flag.String("grafana", "localhost", "grafana host and port")
+var flagGrafana = flag.String("grafana", "http://127.0.0.1:3000", "grafana host and port")
 var flagOpenIDEndpoint = flag.String("endpoint", "", "openid endpoint")
 var flagListen = flag.String("l", ":8080", "proxy server listen address")
 var flagServer = flag.String("n", "localhost", "proxy domain name openid will return to")
 
+var flagSSL = flag.Bool("ssl", false, "enable https")
+var flagSSLCertFile = flag.String("cert", "ssl/server.crt", "ssl server certificate file")
+var flagSSLKeyFile = flag.String("key", "ssl/server.key", "ssl server key file")
+
 func main() {
 
 	flag.Parse()
+
+	proto := "http"
+	if *flagSSL {
+		proto = "https"
+	}
 
 	al := middlewares.NewAccessLog(os.Stdout)
 
@@ -29,8 +38,8 @@ func main() {
 
 	sessionMgr := middlewares.NewSessions(store)
 	openid := middlewares.NewOpenID(
-		"https://login.netease.com/openid",
-		fmt.Sprintf("http://%s:%s", *flagServer, strings.Split(*flagListen, ":")[1]),
+		*flagOpenIDEndpoint,
+		fmt.Sprintf("%s://%s:%s", proto, *flagServer, strings.Split(*flagListen, ":")[1]),
 		"/openid",
 	)
 
@@ -43,7 +52,10 @@ func main() {
 	app.Use(openid)
 	app.Use(proxy)
 
-	// start the app
-	app.Run(*flagListen)
-	// app.RunTLS(*flagListen, "ssl/server.crt", "ssl/server.key")
+	// start the server
+	if *flagSSL {
+		app.RunTLS(*flagListen, *flagSSLCertFile, *flagSSLKeyFile)
+	} else {
+		app.Run(*flagListen)
+	}
 }
